@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t liminal --target build -t liminal-test .
+
+      - name: Run tests
+        run: docker run --rm liminal-test cabal test all
+
+      - name: Build runtime image
+        run: docker build -t liminal .
