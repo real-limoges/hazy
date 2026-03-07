@@ -1,4 +1,4 @@
-module Liminal.Core.Types
+module Hazy.Core.Types
     ( Degree
     , MembershipFn
     , FuzzySet

@@ -1,7 +1,7 @@
-module Liminal.Core.Norm
+module Hazy.Core.Norm
 where
 
-import Liminal.Core.Types (Degree)
+import Hazy.Core.Types (Degree)
 
 class TNorm t where
     tnorm :: t -> Degree -> Degree -> Degree

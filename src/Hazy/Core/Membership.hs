@@ -1,7 +1,7 @@
-module Liminal.Core.Membership
+module Hazy.Core.Membership
 where
 
-import Liminal.Core.Types (MembershipFn)
+import Hazy.Core.Types (MembershipFn)
 
 triangular :: Double -> Double -> Double -> MembershipFn
 triangular a b c x

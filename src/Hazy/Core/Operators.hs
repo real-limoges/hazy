@@ -1,4 +1,4 @@
-module Liminal.Core.Operators
+module Hazy.Core.Operators
 where
 
 

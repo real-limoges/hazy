@@ -1,4 +1,4 @@
-module Liminal.Core.Defuzzify
+module Hazy.Core.Defuzzify
 where
 
 data DefuzzMethod

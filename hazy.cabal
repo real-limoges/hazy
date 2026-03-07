@@ -1,0 +1,58 @@
+cabal-version:      3.14
+name:               hazy
+version:            0.1.0.0
+synopsis:           General-purpose fuzzy logic library
+description:
+    Hazy provides membership functions, fuzzy operators, t-norms/s-norms,
+    Mamdani and Sugeno inference, and defuzzification.
+license:            BSD-3-Clause
+license-file:       LICENSE
+author:             Real Limoges
+maintainer:         b.real.limoges@gmail.com
+build-type:         Simple
+
+common warnings
+    ghc-options: -Wall -O2
+
+library
+    import:           warnings
+    exposed-modules:
+        Hazy
+        Hazy.Core.Types
+        Hazy.Core.TNorm
+        Hazy.Core.Operators
+        Hazy.Core.Membership
+        Hazy.Core.Defuzzify
+        Hazy.Inference.Types
+        Hazy.Inference.Mamdani
+        Hazy.Inference.Sugeno
+        Hazy.Inference.Evaluate
+    build-depends:
+        base ^>=4.21.0.0,
+        text,
+        containers,
+        vector
+    hs-source-dirs:   src
+    default-language: GHC2024
+
+test-suite hazy-test
+    import:           warnings
+    default-language: GHC2024
+    type:             exitcode-stdio-1.0
+    hs-source-dirs:   test
+    main-is:          Spec.hs
+    other-modules:
+        Hazy.Core.TNormSpec
+        Hazy.Core.OperatorsSpec
+        Hazy.Core.MembershipSpec
+        Hazy.Core.DefuzzifySpec
+        Hazy.Inference.EvaluateSpec
+    build-depends:
+        base ^>=4.21.0.0,
+        hazy,
+        hspec,
+        QuickCheck,
+        text,
+        containers
+    build-tool-depends:
+        hspec-discover:hspec-discover
