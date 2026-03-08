@@ -1,5 +1,9 @@
 module Hazy.Core.Membership
-where
+    ( triangular
+    , trapezoidal
+    , gaussian
+    , sigmoid
+    ) where
 
 import Hazy.Core.Types (MembershipFn)
 

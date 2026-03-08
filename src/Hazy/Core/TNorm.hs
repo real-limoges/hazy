@@ -1,5 +1,10 @@
-module Hazy.Core.Norm
-where
+module Hazy.Core.TNorm
+    ( TNorm(..)
+    , SNorm(..)
+    , MinMax(..)
+    , Product(..)
+    , Lukasiewicz(..)
+    ) where
 
 import Hazy.Core.Types (Degree)
 

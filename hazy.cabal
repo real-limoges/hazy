@@ -13,20 +13,17 @@ build-type:         Simple
 
 common warnings
     ghc-options: -Wall -O2
+    default-extensions: OverloadedStrings
 
 library
     import:           warnings
     exposed-modules:
-        Hazy
         Hazy.Core.Types
         Hazy.Core.TNorm
         Hazy.Core.Operators
         Hazy.Core.Membership
         Hazy.Core.Defuzzify
         Hazy.Inference.Types
-        Hazy.Inference.Mamdani
-        Hazy.Inference.Sugeno
-        Hazy.Inference.Evaluate
     build-depends:
         base ^>=4.21.0.0,
         text,
@@ -42,6 +39,7 @@ test-suite hazy-test
     hs-source-dirs:   test
     main-is:          Spec.hs
     other-modules:
+        Hazy.Core.TypesSpec
         Hazy.Core.TNormSpec
         Hazy.Core.OperatorsSpec
         Hazy.Core.MembershipSpec

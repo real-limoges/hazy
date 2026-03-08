@@ -1,7 +1,7 @@
 module Hazy.Core.Types
     ( Degree
     , MembershipFn
-    , FuzzySet
+    , FuzzySet(..)
     , clampDegree )
 where
 
