@@ -1,0 +1,7 @@
+dist-newstyle/
+.git/
+.github/
+docs/
+data/
+*.md
+LICENSE
