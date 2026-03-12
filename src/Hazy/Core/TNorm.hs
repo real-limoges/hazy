@@ -1,10 +1,10 @@
-module Hazy.Core.TNorm
-    ( TNorm(..)
-    , SNorm(..)
-    , MinMax(..)
-    , Product(..)
-    , Lukasiewicz(..)
-    ) where
+module Hazy.Core.TNorm (
+    TNorm (..),
+    SNorm (..),
+    MinMax (..),
+    Product (..),
+    Lukasiewicz (..),
+) where
 
 import Hazy.Core.Types (Degree)
 
@@ -14,13 +14,12 @@ class TNorm t where
 class SNorm s where
     snorm :: s -> Degree -> Degree -> Degree
 
-
 data MinMax = MinMax
 data Product = Product
 data Lukasiewicz = Lukasiewicz
 
-instance TNorm MinMax where tnorm _ a b = min a b
-instance SNorm MinMax where snorm _ a b = max a b
+instance TNorm MinMax where tnorm _ = min
+instance SNorm MinMax where snorm _ = max
 
 instance TNorm Product where tnorm _ a b = a * b
 instance SNorm Product where snorm _ a b = a + b - a * b

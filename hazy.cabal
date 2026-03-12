@@ -18,12 +18,19 @@ common warnings
 library
     import:           warnings
     exposed-modules:
+        Hazy
+        Hazy.Core
         Hazy.Core.Types
         Hazy.Core.TNorm
         Hazy.Core.Operators
         Hazy.Core.Membership
         Hazy.Core.Defuzzify
+        Hazy.Inference
         Hazy.Inference.Types
+        Hazy.Inference.Evaluate
+    other-modules:
+        Hazy.Inference.Mamdani
+        Hazy.Inference.Sugeno
     build-depends:
         base ^>=4.21.0.0,
         text,
@@ -45,6 +52,9 @@ test-suite hazy-test
         Hazy.Core.MembershipSpec
         Hazy.Core.DefuzzifySpec
         Hazy.Inference.EvaluateSpec
+        Hazy.Inference.MamdaniSpec
+        Hazy.Inference.SugenoSpec
+        Hazy.Inference.TypesSpec
     build-depends:
         base ^>=4.21.0.0,
         hazy,

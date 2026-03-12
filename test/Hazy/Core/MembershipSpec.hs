@@ -33,7 +33,7 @@ spec = do
         it "always returns values in [0, 1]" $
             property $ \x ->
                 let d = triangular 0 5 10 x
-                in d >= 0.0 && d <= 1.0
+                 in d >= 0.0 && d <= 1.0
 
     describe "trapezoidal" $ do
         it "returns 1.0 on flat top" $
@@ -57,30 +57,32 @@ spec = do
         it "always returns values in [0, 1]" $
             property $ \x ->
                 let d = trapezoidal 0 3 7 10 x
-                in d >= 0.0 && d <= 1.0
+                 in d >= 0.0 && d <= 1.0
 
     describe "gaussian" $ do
         it "returns 1.0 at center" $
             gaussian 5 2 5 `shouldBe` 1.0
 
         it "is symmetric around center" $
-            property $ forAll (choose (0.0, 10.0)) $ \offset ->
-                gaussian 5 2 (5 + offset) `approxEq` gaussian 5 2 (5 - offset)
+            property $
+                forAll (choose (0.0, 10.0)) $ \offset ->
+                    gaussian 5 2 (5 + offset) `approxEq` gaussian 5 2 (5 - offset)
 
         it "always returns values in [0, 1]" $
             property $ \x ->
                 let d = gaussian 5 2 x
-                in d >= 0.0 && d <= 1.0
+                 in d >= 0.0 && d <= 1.0
 
     describe "sigmoid" $ do
         it "returns 0.5 at inflection point" $
             sigmoid 5 1 5 `shouldBe` 0.5
 
         it "is monotonically increasing for positive slope" $
-            property $ forAll ((,) <$> choose (-100.0, 100.0) <*> choose (-100.0, 100.0)) $ \(a, b) ->
-                a <= b ==> sigmoid 5 1 a <= sigmoid 5 1 b + 1e-10
+            property $
+                forAll ((,) <$> choose (-100.0, 100.0) <*> choose (-100.0, 100.0)) $ \(a, b) ->
+                    a <= b ==> sigmoid 5 1 a <= sigmoid 5 1 b + 1e-10
 
         it "always returns values in [0, 1]" $
             property $ \x ->
                 let d = sigmoid 5 1 x
-                in d >= 0.0 && d <= 1.0
+                 in d >= 0.0 && d <= 1.0

@@ -24,22 +24,24 @@ spec = do
         it "always returns a value in [0, 1]" $
             property $ \x ->
                 let d = clampDegree x
-                in d >= 0.0 && d <= 1.0
+                 in d >= 0.0 && d <= 1.0
 
     describe "FuzzySet" $ do
         it "can be constructed and its membership function evaluated" $ do
-            let fs = FuzzySet
-                    { fsName = "test"
-                    , fsMf = \x -> if x > 0 then 1.0 else 0.0
-                    , fsUniverse = (0.0, 10.0)
-                    }
+            let fs =
+                    FuzzySet
+                        { fsName = "test"
+                        , fsMf = \x -> if x > 0 then 1.0 else 0.0
+                        , fsUniverse = (0.0, 10.0)
+                        }
             fsMf fs 5.0 `shouldBe` 1.0
             fsMf fs (-1.0) `shouldBe` 0.0
 
         it "stores universe bounds correctly" $ do
-            let fs = FuzzySet
-                    { fsName = "bounded"
-                    , fsMf = const 0.5
-                    , fsUniverse = (0.0, 100.0)
-                    }
+            let fs =
+                    FuzzySet
+                        { fsName = "bounded"
+                        , fsMf = const 0.5
+                        , fsUniverse = (0.0, 100.0)
+                        }
             fsUniverse fs `shouldBe` (0.0, 100.0)
