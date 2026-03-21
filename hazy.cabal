@@ -28,11 +28,14 @@ library
         Hazy.Inference
         Hazy.Inference.Types
         Hazy.Inference.Evaluate
+        Hazy.Algorithms
+        Hazy.Algorithms.FCM
     other-modules:
         Hazy.Inference.Mamdani
         Hazy.Inference.Sugeno
+        Hazy.Algorithms.FCM.Internal
     build-depends:
-        base ^>=4.21.0.0,
+        base >=4.21 && <4.23,
         text,
         containers,
         vector
@@ -55,12 +58,14 @@ test-suite hazy-test
         Hazy.Inference.MamdaniSpec
         Hazy.Inference.SugenoSpec
         Hazy.Inference.TypesSpec
+        Hazy.Algorithms.FCMSpec
     build-depends:
-        base ^>=4.21.0.0,
+        base >=4.21 && <4.23,
         hazy,
         hspec,
         QuickCheck,
         text,
-        containers
+        containers,
+        vector
     build-tool-depends:
         hspec-discover:hspec-discover
