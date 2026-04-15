@@ -25,12 +25,13 @@ data FCMResult = FCMResult
     deriving (Show)
 
 defaultConfig :: Int -> FCMConfig
-defaultConfig c = FCMConfig
-    { fcmClusters = c
-    , fcmFuzziness = 2.0
-    , fcmEpsilon = 1e-5
-    , fcmMaxIter = 100
-    }
+defaultConfig c =
+    FCMConfig
+        { fcmClusters = c
+        , fcmFuzziness = 2.0
+        , fcmEpsilon = 1e-5
+        , fcmMaxIter = 100
+        }
 
 fcm :: FCMConfig -> Vector (Vector Double) -> FCMResult
 fcm cfg xs =
