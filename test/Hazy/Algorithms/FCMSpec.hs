@@ -22,8 +22,9 @@ spec = describe "Hazy.Algorithms.FCM" $ do
         it "centers are near 2 and 11" $ do
             let cs = V.toList $ V.map V.head (fcmCenters result)
                 (lo, hi) = case cs of
-                    [a, b] | a <= b -> (a, b)
-                           | otherwise -> (b, a)
+                    [a, b]
+                        | a <= b -> (a, b)
+                        | otherwise -> (b, a)
                     _ -> error "expected 2 centers"
             lo `shouldSatisfy` (\x -> abs (x - 2.0) < 0.5)
             hi `shouldSatisfy` (\x -> abs (x - 11.0) < 0.5)
@@ -49,5 +50,6 @@ spec = describe "Hazy.Algorithms.FCM" $ do
             let n = min n' 20
                 xs = V.generate n (\i -> V.singleton (fromIntegral i :: Double))
                 r = fcm (defaultConfig 2) xs
-             in all (\row -> all (\d -> d >= 0 && d <= 1) (V.toList row))
+             in all
+                    (\row -> all (\d -> d >= 0 && d <= 1) (V.toList row))
                     (V.toList (fcmMembership r))

@@ -1,6 +1,7 @@
 module Hazy.Core.Defuzzify (
     DefuzzMethod (..),
     defuzzify,
+    sampledAggregation,
 ) where
 
 import Hazy.Core.Types (Degree, FuzzySet (..))
@@ -28,6 +29,19 @@ combinedUniverse fss = (minimum los, maximum his)
 
 aggregatedMf :: [(FuzzySet, Degree)] -> Double -> Degree
 aggregatedMf fss x = maximum [min alpha (fsMf fs x) | (fs, alpha) <- fss]
+
+{- | Sample the aggregated (max-clipped) membership curve across the
+  combined universe of all clipped consequents. Returns an empty list when
+  no consequents fire. Useful for visualizing the Mamdani output fuzzy set
+  before defuzzification.
+-}
+sampledAggregation :: [(FuzzySet, Degree)] -> [(Double, Degree)]
+sampledAggregation [] = []
+sampledAggregation fss =
+    let (lo, hi) = combinedUniverse fss
+        xs = samplePoints defaultResolution (lo, hi)
+        mu = aggregatedMf fss
+     in [(x, mu x) | x <- xs]
 
 defuzzify :: DefuzzMethod -> [(FuzzySet, Degree)] -> Double
 defuzzify (Custom f) fss = f fss
