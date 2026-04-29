@@ -6,7 +6,7 @@ The name evokes the soft boundaries of fuzzy logic — where categories blur and
 
 ## What This Is
 
-A **fuzzy logic library** — membership functions, fuzzy operators, t-norms/s-norms, Mamdani and Sugeno inference, defuzzification.
+A **fuzzy logic library** — membership functions, fuzzy operators, t-norms/s-norms, Mamdani and Sugeno inference, defuzzification, and Fuzzy C-Means clustering.
 
 ## Building
 
@@ -54,35 +54,56 @@ result = evaluate fis (Map.singleton "temperature" 75.0)
 -- => Map.fromList [("fan", ~78.8)]
 ```
 
+## Fuzzy C-Means Clustering
+
+Hazy also ships a pure, deterministic implementation of Fuzzy C-Means (FCM):
+
+```haskell
+import Hazy
+import Data.Vector qualified as V
+
+points = V.fromList [V.fromList [x, y] | (x, y) <- [(0,0), (0,1), (10,10), (10,11)]]
+
+result = fcm (defaultConfig 2) points
+-- fcmCenters     :: Vector (Vector Double)   — cluster centroids
+-- fcmMembership  :: Vector (Vector Degree)   — soft assignments per point
+-- fcmIterations  :: Int                      — iterations until convergence
+```
+
+`defaultConfig c` builds a config for `c` clusters with fuzziness `m = 2.0`, epsilon `1e-5`, and a 100-iteration cap. Tweak any field of `FCMConfig` to change the behavior.
+
 ## Architecture
 
-The library is organized in two layers:
+The library is organized in three layers:
 
 - **Core** (`Hazy.Core.*`) — Domain-agnostic fuzzy logic: membership functions, t-norms/s-norms, operators, defuzzification.
 - **Inference** (`Hazy.Inference.*`) — Mamdani and Sugeno inference engines. Defines linguistic variables, fuzzy rules, and the top-level `evaluate` function.
+- **Algorithms** (`Hazy.Algorithms.*`) — Fuzzy clustering algorithms. Currently exposes Fuzzy C-Means via `fcm`.
 
 ### Module Structure
 
 ```
-Hazy                        -- Re-exports everything
-├── Hazy.Core               -- Re-exports all Core modules
-│   ├── Hazy.Core.Types     -- Degree, MembershipFn, FuzzySet
-│   ├── Hazy.Core.Membership-- triangular, trapezoidal, gaussian, sigmoid
-│   ├── Hazy.Core.TNorm     -- MinMax, Product, Lukasiewicz
-│   ├── Hazy.Core.Operators -- fuzzyAnd, fuzzyOr, fuzzyNot, very, somewhat
-│   └── Hazy.Core.Defuzzify -- Centroid, Bisector, MeanOfMaximum, ...
-└── Hazy.Inference          -- Re-exports Types + Evaluate
-    ├── Hazy.Inference.Types-- LinguisticVar, FuzzyRule, FIS
-    └── Hazy.Inference.Evaluate -- evaluate
+Hazy                          -- Re-exports everything
+├── Hazy.Core                 -- Re-exports all Core modules
+│   ├── Hazy.Core.Types       -- Degree, MembershipFn, FuzzySet
+│   ├── Hazy.Core.Membership  -- triangular, trapezoidal, gaussian, sigmoid
+│   ├── Hazy.Core.TNorm       -- MinMax, Product, Lukasiewicz
+│   ├── Hazy.Core.Operators   -- fuzzyAnd, fuzzyOr, fuzzyNot, very, somewhat
+│   └── Hazy.Core.Defuzzify   -- Centroid, Bisector, MeanOfMaximum, ...
+├── Hazy.Inference            -- Re-exports Types + Evaluate
+│   ├── Hazy.Inference.Types  -- LinguisticVar, FuzzyRule, FIS
+│   └── Hazy.Inference.Evaluate -- evaluate
+└── Hazy.Algorithms           -- Re-exports clustering algorithms
+    └── Hazy.Algorithms.FCM   -- FCMConfig, FCMResult, fcm, defaultConfig
 ```
 
-Mamdani and Sugeno engines are internal modules, dispatched through `evaluate`.
+Mamdani, Sugeno, and `FCM.Internal` are internal modules — public access is through `evaluate` and `fcm`.
 
 See [`docs/architecture.md`](docs/architecture.md) for the full design document.
 
 ### Key Design Decisions
 
-- **Purity**: `evaluate :: FIS -> Map Text Double -> Map Text Double` is pure — no IO, no state.
+- **Purity**: `evaluate :: FIS -> Map Text Double -> Map Text Double` and `fcm :: FCMConfig -> Vector (Vector Double) -> FCMResult` are both pure — no IO, no state, no randomness.
 - **Membership functions are just functions**: `type MembershipFn = Double -> Degree`. No wrapper types.
 - **Extensible aggregation**: T-norms/S-norms use typeclasses (`TNorm`, `SNorm`), so users can define their own.
 - **Extensible defuzzification**: The `Custom` constructor accepts any `[(FuzzySet, Degree)] -> Double`.
